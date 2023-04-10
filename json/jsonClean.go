@@ -23,13 +23,20 @@ func main() {
 		subOpt := strings.Index(val, "\\u")
 		if subOpt != -1 {
 			subOpts := strings.ReplaceAll(val, "\"", "")
-			subOpts1 := strings.ReplaceAll(subOpts, "}", "")
+			isBlock := strings.Index(val, "}")
+			if isBlock != -1 {
+				subOpts = strings.ReplaceAll(subOpts, "}", "")
+			}
 
-			msgStr, err := zhToUnicode([]byte(subOpts1))
+			msgStr, err := zhToUnicode([]byte(subOpts))
 			if err != nil {
 				fmt.Println("err:", err)
 			}
-			val = "\"" + string(msgStr) + "\"}"
+			if isBlock != -1 {
+				val = "\"" + string(msgStr) + "\"}"
+			} else {
+				val = "\"" + string(msgStr) + "\""
+			}
 		}
 		strNew.WriteString(":" + val)
 	}
