@@ -1,3 +1,0 @@
-#!/bin/bash 
-echo "result:"
-echo `echo $1 |sed 's#\\\"#"#g'|sed 's#\\u#\u#g'`|json_pp

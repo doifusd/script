@@ -14,6 +14,10 @@ func main() {
 	flag.StringVar(&str, "str", "", "str")
 	flag.Parse()
 
+	fmt.Println("---------------------")
+	fmt.Println("使用方法:jsonClean --str '{}'")
+	fmt.Println("---------------------")
+
 	tmp := strings.ReplaceAll(str, "\\\"", "\"")
 	tmp2 := strings.ReplaceAll(tmp, "\\\\u", "\\u")
 
@@ -22,29 +26,18 @@ func main() {
 	for _, val := range strArr {
 		subOpt := strings.Index(val, "\\u")
 		if subOpt != -1 {
-			subOpts := strings.ReplaceAll(val, "\"", "")
-			isBlock := strings.Index(val, "}")
-			if isBlock != -1 {
-				subOpts = strings.ReplaceAll(subOpts, "}", "")
-			}
-
-			msgStr, err := zhToUnicode([]byte(subOpts))
+			msgStr, err := zhToUnicode([]byte(val))
 			if err != nil {
 				fmt.Println("err:", err)
 			}
-			if isBlock != -1 {
-				val = "\"" + string(msgStr) + "\"}"
-			} else {
-				val = "\"" + string(msgStr) + "\""
-			}
+			val = string(msgStr)
 		}
 		strNew.WriteString(":" + val)
 	}
-
 	cleanStr := strings.TrimPrefix(strNew.String(), ":")
 	var prettyJSON bytes.Buffer
 	if err := json.Indent(&prettyJSON, []byte(cleanStr), "", "    "); err != nil {
-		fmt.Println("err:", err)
+		fmt.Println("json_pretty_err:", err)
 	}
 	fmt.Printf("\033[32;42;40m%s\033[0m\n", prettyJSON.String())
 }
