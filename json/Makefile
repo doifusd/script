@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 #================================================================
 #   Copyright (C) 2023 Sangfor Ltd. All rights reserved.
@@ -10,6 +10,6 @@
 #================================================================
 
 
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOPROXY="https://goproxy.cn,direct" go build -o "./jsonClean" -a -installsuffix cgo -ldflags '-s -w' ./
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOPROXY="https://goproxy.cn,direct" go build -o "./jf" -a -installsuffix cgo -ldflags '-s -w' ./
 
-CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 GOPROXY="https://goproxy.cn,direct" go build -o "./jsonClean" -a -installsuffix cgo -ldflags '-s -w' ./
+CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 GOPROXY="https://goproxy.cn,direct" go build -o "./jf" -a -installsuffix cgo -ldflags '-s -w' ./
