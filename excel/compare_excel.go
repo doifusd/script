@@ -17,7 +17,6 @@ func main() {
 }
 
 func compare(fileNameFull, fileNameSub string) {
-
 	rowsFull, err := findFull(fileNameFull)
 	if err != nil {
 		fmt.Println(fileNameFull, "主文件读取错误")
