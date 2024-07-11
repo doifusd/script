@@ -1,0 +1,57 @@
+package main
+
+import (
+	"fmt"
+	"github.com/xuri/excelize/v2"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+)
+
+func main() {
+	readExcel("./file/202305.xlsx")
+}
+
+//http 请求
+//数据库读取
+
+func DataSource() {
+
+	dsn := "user:pass@tcp(127.0.0.1:3306)/lecoo_service?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println("err:", err)
+	}
+
+	db.Table("server_invoice").Find(&product, 1) // 根据整型主键查找
+	db.First(&product, "code = ?", "D42")        // 查找 code 字段值为 D42 的记录
+
+}
+
+func readExcel(fileNameFull string) {
+	rowsFull, err := findFull(fileNameFull)
+	if err != nil {
+		fmt.Println(fileNameFull, "文件夹")
+	}
+	for _, row1 := range rowsFull {
+		fmt.Println("find_res:", row1[0], row1[1])
+		//查询数据库
+	}
+	fmt.Println("complete")
+}
+
+func findFull(fileName string) (rows [][]string, err error) {
+	f, err := excelize.OpenFile(fileName)
+	if err != nil {
+		return
+	}
+	defer func() {
+		if err := f.Close(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	rows, err = f.GetRows("Sheet1")
+	if err != nil {
+		return
+	}
+	return
+}
